@@ -4,6 +4,7 @@ server:
     context-path: /
     session:
       timeout: 120s
+  max-http-header-size: 65536
 spring:
   profiles:
     active: dev #开发模式
