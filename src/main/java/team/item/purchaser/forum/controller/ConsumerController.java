@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import team.item.purchaser.forum.entity.Consumer;
+import team.item.purchaser.forum.provider.UsernamePasswordAuthenticationProvider;
 import team.item.purchaser.forum.service.*;
 
 import java.util.*;
@@ -14,6 +15,8 @@ public class ConsumerController implements Controller<Consumer, UUID>{
 
     @Autowired
     ConsumerService service;
+
+    private UsernamePasswordAuthenticationProvider provider;
 
     /**
      * Service
@@ -48,6 +51,4 @@ public class ConsumerController implements Controller<Consumer, UUID>{
     public Object list(Consumer entity, @RequestParam Integer page, @RequestParam Integer size) {
         return Controller.super.list(entity, page, size);
     }
-
-
 }

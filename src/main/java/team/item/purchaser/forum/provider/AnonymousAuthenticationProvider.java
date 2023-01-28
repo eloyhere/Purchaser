@@ -25,10 +25,6 @@ public class AnonymousAuthenticationProvider implements AuthenticationProvider {
             URI.create("/"), URI.create("/login"), URI.create("/register")
     );
 
-    public AnonymousAuthenticationProvider() {
-
-    }
-
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         URI visit = URI.create(request.getRequestURI());
