@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 @org.springframework.stereotype.Service(value = "consumerService")
 public class ConsumerService implements Service<Consumer, UUID>{
@@ -69,5 +70,14 @@ public class ConsumerService implements Service<Consumer, UUID>{
 
     public Optional<Consumer> loginById(UUID id, String password){
         return repository.findByIdAndPassword(id, password);
+    }
+
+    public List<String> existsByKey(Consumer consumer){
+        return Stream.of(
+                repository.existsById(consumer.getId())?"id":"null",
+                repository.existsByUsername(consumer.getUsername())?"username":"null",
+                repository.existsByPhone(consumer.getPhone())?"phone":"null",
+                repository.existsByEmail(consumer.getEmail())?"email":"null"
+        ).filter((s)-> s.equals("null")).toList();
     }
 }

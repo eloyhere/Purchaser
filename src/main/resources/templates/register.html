@@ -2,9 +2,83 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>注册新用户</title>
+    <style>
+        form{
+            width: 500px;
+            height: 300px;
+            border-radius: 10px;
+            border: 1px solid #cecece;
+            margin:0 auto;
+            margin-top: 50px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            display: flex;
+        }
+        .form-item{
+            width: 100%;
+            height: 32px;
+            line-height: 32px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            vertical-align: middle;
+        }
+        .form-input{
+            border: 1px solid #cecece;
+            width: 50%;
+            height: 32px;
+            border-radius: 10px;
+            outline: none;
+        }
+        .form-label{
+            width: fit-content;
+            min-width: 80px;
+        }
+        .form-button{
+            width: 96px;
+            height: 32px;
+            user-select: none;
+            cursor: pointer;
+            border: 1px solid #cecece;
+            border-radius: 5px;
+            background-color: #40C4FF;
+            text-align: center;
+        }
+        .form-button:hover{
+            background-color: #80D8FF;
+        }
+        .form-captcha{
+            width: 80px;
+            height: 32px;
+        }
+    </style>
 </head>
 <body>
-
+    <form id="form" accept-charset="UTF-8" action="/register" method="post">
+        <div class="form-item">
+            <div class="form-label">用户名</div>
+            <input class="form-input" id="username" name="username">
+        </div>
+        <div class="form-item">
+            <div class="form-label">密码</div>
+            <input class="form-input" id="password" name="password">
+        </div>
+        <div class="form-item">
+            <div class="form-label">确认密码</div>
+            <input class="form-input" id="password1" name="password1">
+        </div>
+        <div class="form-item">
+            <div class="form-label">验证码</div>
+            <div class="form-captcha" th:text="${captcha}"></div>
+            <input class="form-input" placeholder="" id="captcha" name="captcha">
+        </div>
+        <div class="form-item">
+            <div class="form-button">重置</div>
+            <div class="form-button">注册</div>
+        </div>
+    </form>
 </body>
 </html>

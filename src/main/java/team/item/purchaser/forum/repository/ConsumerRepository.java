@@ -48,6 +48,13 @@ public interface ConsumerRepository extends JpaRepository<Consumer, UUID>, JpaSp
     @Query("select c from Consumer c where c.id = :id and c.password = :password")
     Optional<Consumer> findByIdAndPassword(@Param("id") @NonNull UUID id, @Param("password") @NonNull String password);
 
+    @Query("select (count(c) > 0) from Consumer c where c.username = :username")
+    boolean existsByUsername(@Param("username") @NonNull String username);
+
+    @Query("select c from Consumer c where c.username = :username")
+    Optional<Consumer> findByUsername(@Param("username") @NonNull String username);
+
+
 
 
 }

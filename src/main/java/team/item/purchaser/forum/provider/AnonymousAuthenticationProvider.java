@@ -29,8 +29,11 @@ public class AnonymousAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         URI visit = URI.create(request.getRequestURI());
         Consumer anonymous = ConsumerDetailsService.anonymous();
-        authentication.setAuthenticated(whiteList.contains(visit));
-        return new AnonymousAuthenticationToken(anonymous.getUsername(), anonymous, anonymous.getAuthorities());
+        if(whiteList.contains(visit)){
+            return new AnonymousAuthenticationToken(anonymous.getUsername(), anonymous, anonymous.getAuthorities());
+        }
+        authentication.setAuthenticated(false);
+        return authentication;
     }
 
     @Override

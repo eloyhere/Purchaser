@@ -3,17 +3,23 @@ package team.item.purchaser.forum.aspect;
 import java.util.*;
 import org.aspectj.lang.*;
 import java.util.function.*;
+import java.util.stream.Stream;
+
 import jakarta.servlet.http.*;
 import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.ModelAndView;
 import team.item.purchaser.forum.exception.AuthenticationException;
 import team.item.purchaser.forum.exception.CacheableException;
 import team.item.purchaser.forum.exception.DuplicateElementException;
 import team.item.purchaser.forum.exception.ParameterPresentException;
+
+import javax.management.modelmbean.ModelMBeanConstructorInfo;
 
 
 @Aspect
@@ -38,10 +44,11 @@ public class ResponseAspect {
     public Object around(ProceedingJoinPoint point){
         try {
             Object result = point.proceed();
-            if(result instanceof ResponseEntity<?>){
-                return result;
+            MethodSignature signature = (MethodSignature) point.getSignature();
+            if(Objects.equals(signature.getReturnType(), Object.class)){
+                return ResponseEntity.ok(result);
             }
-            return ResponseEntity.ok(result);
+            return result;
         }catch (Throwable throwable){
             return mapper.getOrDefault(throwable.getClass(), (t)-> new ResponseEntity<>(t.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR)).apply(throwable);
         }
