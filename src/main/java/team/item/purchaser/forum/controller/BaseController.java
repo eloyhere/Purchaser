@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -43,8 +45,10 @@ public class BaseController {
     @GetMapping(value = "register")
     public ModelAndView preRegister(){
         HttpSession session = request.getSession();
+        String captcha = "111";
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("captcha", "111");
+        modelAndView.addObject("captcha", captcha);
+        session.setAttribute("captcha", captcha);
         modelAndView.setViewName("register.html");
         return modelAndView;
     }
@@ -60,6 +64,6 @@ public class BaseController {
             }
             return keys;
         }
-        return null;
+        return new ResponseEntity<>("Invalid captcha", HttpStatus.BAD_REQUEST);
     }
 }

@@ -36,8 +36,10 @@ public class ConsumerService implements Service<Consumer, UUID>{
         if(repository.existsByPhone(entity.getPhone())){
             throw new DuplicateElementException("Duplicate element for field: \"phone\": "+entity.getPhone());
         }
-        entity.setBan(LocalDateTime.now().minusHours(2));
-        entity.setMute(LocalDateTime.now().minusHours(2));
+        LocalDateTime now = LocalDateTime.now();
+        entity.setBan(now.minusHours(2));
+        entity.setMute(now.minusHours(2));
+        entity.setExpire(now.minusHours(2));
         return repository.save(entity);
     }
 
@@ -74,10 +76,9 @@ public class ConsumerService implements Service<Consumer, UUID>{
 
     public List<String> existsByKey(Consumer consumer){
         return Stream.of(
-                repository.existsById(consumer.getId())?"id":"null",
-                repository.existsByUsername(consumer.getUsername())?"username":"null",
-                repository.existsByPhone(consumer.getPhone())?"phone":"null",
-                repository.existsByEmail(consumer.getEmail())?"email":"null"
-        ).filter((s)-> s.equals("null")).toList();
+                repository.existsByUsername(consumer.getUsername())?"username":null,
+                repository.existsByPhone(consumer.getPhone())?"phone":null,
+                repository.existsByEmail(consumer.getEmail())?"email":null
+        ).filter(Objects::nonNull).toList();
     }
 }

@@ -77,8 +77,28 @@
         </div>
         <div class="form-item">
             <div class="form-button">重置</div>
-            <div class="form-button">注册</div>
+            <div class="form-button" onclick="register()">注册</div>
         </div>
     </form>
+    <script>
+        let register = ()=>{
+            let parameters = new URLSearchParams();
+            parameters.append("username", document.getElementById("username").value);
+            parameters.append("password", document.getElementById("password").value);
+            parameters.append("password1", document.getElementById("password").value);
+            parameters.append("captcha", document.getElementById("captcha").value);
+            let promise = fetch("/register", {
+                method: "post",
+                mode: "cors",
+                body: parameters
+            }).then((response)=>{
+               response.text().then((text)=>{
+                   console.log(text);
+               })
+            }).catch((error)=>{
+               console.log(error);
+            });
+        }
+    </script>
 </body>
 </html>

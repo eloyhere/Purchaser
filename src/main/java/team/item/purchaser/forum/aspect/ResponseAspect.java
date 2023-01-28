@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import jakarta.servlet.http.*;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,11 @@ import javax.management.modelmbean.ModelMBeanConstructorInfo;
 @Aspect
 @Component
 public class ResponseAspect {
+
+    private static final List<Class<?>> whiteList = List.of(
+            ModelAndView.class,
+            ResponseEntity.class
+    );
 
     private static final HashMap<Class<? extends Throwable>, Function<Throwable, ResponseEntity<?>>> mapper = new HashMap<>();
 
@@ -44,11 +50,11 @@ public class ResponseAspect {
     public Object around(ProceedingJoinPoint point){
         try {
             Object result = point.proceed();
-            MethodSignature signature = (MethodSignature) point.getSignature();
-            if(Objects.equals(signature.getReturnType(), Object.class)){
-                return ResponseEntity.ok(result);
+            Class<?> clazz = result.getClass();
+            if(whiteList.contains(clazz)){
+                return result;
             }
-            return result;
+            return ResponseEntity.ok(result);
         }catch (Throwable throwable){
             return mapper.getOrDefault(throwable.getClass(), (t)-> new ResponseEntity<>(t.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR)).apply(throwable);
         }
