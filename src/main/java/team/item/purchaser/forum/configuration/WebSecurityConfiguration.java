@@ -29,28 +29,12 @@ public class WebSecurityConfiguration{
     private TokenService tokenService;
 
     @Autowired
-    private HttpServletRequest request;
-
-    @Autowired
-    private ConsumerService consumerService;
-
-    @Autowired
     ConsumerDetailsService consumerDetailsService;
 
 
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider(){
-        return new UsernamePasswordAuthenticationProvider(consumerDetailsService);
-    }
-
-    @Bean
-    public AnonymousAuthenticationProvider anonymousAuthenticationProvider(){
-        return new AnonymousAuthenticationProvider(request);
     }
 
     @Bean

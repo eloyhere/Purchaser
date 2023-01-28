@@ -1,10 +1,12 @@
 package team.item.purchaser.forum.provider;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.stereotype.Component;
 import team.item.purchaser.forum.entity.Consumer;
 import team.item.purchaser.forum.service.ConsumerDetailsService;
 
@@ -13,16 +15,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+@Component(value = "AnonymousAuthenticationProvider")
 public class AnonymousAuthenticationProvider implements AuthenticationProvider {
 
-    private final HttpServletRequest request;
+    @Autowired
+    private HttpServletRequest request;
 
     private static final List<URI> whiteList = List.of(
             URI.create("/"), URI.create("/login"), URI.create("/register")
     );
 
-    public AnonymousAuthenticationProvider(HttpServletRequest request) {
-        this.request = request;
+    public AnonymousAuthenticationProvider() {
+
     }
 
     @Override

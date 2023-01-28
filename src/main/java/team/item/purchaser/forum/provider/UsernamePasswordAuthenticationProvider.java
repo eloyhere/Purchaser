@@ -13,15 +13,13 @@ import team.item.purchaser.forum.service.ConsumerService;
 import java.util.Objects;
 import java.util.Optional;
 
+@Component(value = "UsernamePasswordAuthenticationProvider")
 public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
 
-    private final ConsumerDetailsService consumerDetailsService;
+    @Autowired
+    private ConsumerDetailsService consumerDetailsService;
 
     private final InMemoryUserDetailsManager inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
-
-    public UsernamePasswordAuthenticationProvider(ConsumerDetailsService consumerDetailsService){
-        this.consumerDetailsService = consumerDetailsService;
-    }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
