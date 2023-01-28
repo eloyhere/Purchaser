@@ -30,7 +30,6 @@ public class CaptchaProvider {
                 public String text() {
                     return captcha;
                 }
-
                 @Override
                 public String image() {
                     return base64;
